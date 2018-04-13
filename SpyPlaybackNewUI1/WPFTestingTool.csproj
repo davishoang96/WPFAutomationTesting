@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{554A9227-6889-4426-BE86-C24DBD9600D9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>SpyandPlaybackTestTool</RootNamespace>
-    <AssemblyName>SpyandPlaybackTestTool</AssemblyName>
+    <RootNamespace>WPFTestingTool</RootNamespace>
+    <AssemblyName>WPFTestingTool</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

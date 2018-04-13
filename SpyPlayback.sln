@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotsinaWPF", "SpyPlaybackNewUI1\BotsinaWPF.csproj", "{554A9227-6889-4426-BE86-C24DBD9600D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTestingTool", "SpyPlaybackNewUI1\WPFTestingTool.csproj", "{554A9227-6889-4426-BE86-C24DBD9600D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

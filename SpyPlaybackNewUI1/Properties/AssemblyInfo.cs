@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is PlaybackObjectled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SpyandPlaybackTestTool")]
+[assembly: AssemblyTitle("WPF - TestingTool")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SpyandPlaybackTestTool")]
+[assembly: AssemblyProduct("WPF - TestingTool")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
