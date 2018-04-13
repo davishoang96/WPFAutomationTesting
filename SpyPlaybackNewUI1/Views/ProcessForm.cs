@@ -41,7 +41,7 @@ namespace SpyandPlaybackTestTool
                 Thread T1 = new Thread(() =>
                 {
                     MessageBox.Show("AUT: " + targetproc + " ATTACHED SUCCESSFUL", "NOTICED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    WindowInteraction.FocusWindowNormal(thisProc);
+                    WindowInteraction.FocusWindow(thisProc);
                 });
 
                 T1.Start();

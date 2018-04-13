@@ -127,7 +127,7 @@ namespace SpyandPlaybackTestTool
 
             //this.MaximumSize = new Size(XX, YY);
             this.MinimumSize = new Size(1280, 720);
-
+            
             //pf.Show();
         }
 
@@ -156,7 +156,7 @@ namespace SpyandPlaybackTestTool
             else if (ProcessForm.isAttached.Equals(true))
             {
                 AUTPROC = WindowInteraction.GetProcess(ProcessForm.targetproc);
-                WindowInteraction.FocusWindowNormal(thisProc);
+                //WindowInteraction.FocusWindow(thisProc);
                 toolStripStatusLabel1.Text = ProcessForm.targetproc;
                 redcircleTip.Visible = false;
                 greencircleTip.Visible = true;
@@ -194,11 +194,11 @@ namespace SpyandPlaybackTestTool
         private void button1_Click(object sender, EventArgs e)
         {
             //Spy("normal");
-            Thread Tspy = new Thread(() => Spy("normal"));
-            Tspy.Priority = ThreadPriority.Highest;
-            Tspy.IsBackground = true;
-            Tspy.Start();
-            Tspy.Join();
+            Thread T_SPY = new Thread(() => Spy("normal"));
+            T_SPY.Priority = ThreadPriority.Highest;
+            T_SPY.IsBackground = true;
+            T_SPY.Start();
+            T_SPY.Join();
         }
 
         /// <summary>
@@ -643,28 +643,39 @@ namespace SpyandPlaybackTestTool
         // Playback button on test steps table // Add log
         private void btnPlaybackTestSteps_Click(object sender, EventArgs e)
         {
+            if (ProcessForm.targetproc == null)
+            {
+                System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Playback Test Steps function!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (dataGridView2.Rows.Count <= 0)
+            {
+                System.Windows.Forms.MessageBox.Show("There is no data!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             playbackprogress = 0;
             playbackstatus = true;
             stop_playback = false;
-            
-            pf.Show();
+  
+            pf.TopMost = true;
 
-            //pf.timer1.Start();
+            if (Settings.ShowProgressBar.Equals(true))
+                pf.Show();
+            else
+                pf.Hide();
 
 
-            Thread t1 = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
-            t1.Start();
-            t1.Join();
+            Thread T_ClearValue = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
+            T_ClearValue.Start();
+            T_ClearValue.Join();
 
-            Thread t2 = new Thread(()=>PlaybackTestSteps());
-            t2.Priority = ThreadPriority.Highest;
-            t2.Start();
-            t2.IsBackground = true;
- 
-            
-            //t2.Join();
-            //PlaybackTestSteps();
-            
+            Thread T_PlaybackTestSteps = new Thread(()=>PlaybackTestSteps());
+            T_PlaybackTestSteps.Priority = ThreadPriority.Highest;
+            T_PlaybackTestSteps.Start();
+            T_PlaybackTestSteps.IsBackground = true;
+        
+             
         }
 
         /// <summary>
@@ -674,16 +685,7 @@ namespace SpyandPlaybackTestTool
         {
             ExceptionCode excode = new ExceptionCode();
             
-            if (ProcessForm.targetproc == null)
-            {
-                System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Playback Test Steps function!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (dataGridView2.Rows.Count <= 0)
-            {
-                System.Windows.Forms.MessageBox.Show("There is no data!", "Lack Of Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            
             
 
             ResultPanelPush.Clear();
@@ -691,10 +693,6 @@ namespace SpyandPlaybackTestTool
  
             try
             {
-                // Open ProgressBAR
-
-               
-
                 int pbindex = 0;
                 
                 PlaybackObjectList = new PlaybackObject[dataGridView2.Rows.Count];
@@ -732,12 +730,11 @@ namespace SpyandPlaybackTestTool
                     pbindex++;
                 }
 
+                // Percentage for ProgressBar
                 int percentage = 100 / PlaybackObjectList.Count();
 
                 for (int i = 0; i < PlaybackObjectList.Count(); i++)
                 {
-                    // Call ElemenList again to spy another screen before playback
-                    //ElementList = DoSpy.SearchbyFramework("WPF");
 
                     if(stop_playback.Equals(true))
                     {
@@ -909,8 +906,6 @@ namespace SpyandPlaybackTestTool
                             break;
                     }
 
-                    //playbackProgress += i;
-
                     if (flag == 1)
                     {
                         flag = 0;
@@ -922,11 +917,13 @@ namespace SpyandPlaybackTestTool
                 playbackstatus = false;
                 playbacksuccess = true;
                 playbackprogress = 100;
-                //pf.timer1.Stop();
+   
+                pf.TopMost = false;
+
                 Spy("respy");
                 ConsolePanelPush.AppendText(DateTime.Now + " - DONE PLAYBACK");
                 ConsolePanelPush.AppendText(Environment.NewLine);
-                WindowInteraction.FocusWindowNormal(thisProc);
+                WindowInteraction.FocusWindow(thisProc);
             }
             catch (Exception ex)
             {
@@ -971,7 +968,7 @@ namespace SpyandPlaybackTestTool
                     ConsolePanelPush.AppendText(Environment.NewLine);
                 }
             }
-            WindowInteraction.FocusWindowNormal(thisProc);
+            WindowInteraction.FocusWindow(thisProc);
         }
         #endregion
 
@@ -2426,5 +2423,17 @@ namespace SpyandPlaybackTestTool
 
         #endregion
 
+        private void cbxProgressBar_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbxProgressBar.Checked.Equals(true))
+            {
+                Settings.ShowProgressBar = true;
+
+            }
+            else if(cbxProgressBar.Checked.Equals(false))
+            {
+                Settings.ShowProgressBar = false;
+            }
+        }
     }
 }

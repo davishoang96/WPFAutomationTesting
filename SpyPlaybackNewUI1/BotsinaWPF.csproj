@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{554A9227-6889-4426-BE86-C24DBD9600D9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>WPFTestingTool</RootNamespace>
-    <AssemblyName>WPFTestingTool</AssemblyName>
+    <RootNamespace>SpyandPlaybackTestTool</RootNamespace>
+    <AssemblyName>SpyandPlaybackTestTool</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -122,6 +122,8 @@
     </Compile>
     <Compile Include="Ultils\CaptureToImage.cs" />
     <Compile Include="Ultils\DoSpy.cs" />
+    <Compile Include="Ultils\Settings.cs" />
+    <Compile Include="Ultils\Users.cs" />
     <Compile Include="Views\AboutWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,7 +155,6 @@
     <Compile Include="Ultils\ClearTextBox.cs" />
     <Compile Include="Ultils\ExceptionCode.cs" />
     <Compile Include="Ultils\ScriptFile.cs" />
-    <Compile Include="Ultils\Users.cs" />
     <Compile Include="Ultils\WindowInteraction.cs" />
     <Compile Include="Views\ProgressForm.cs">
       <SubType>Form</SubType>
@@ -201,7 +202,9 @@
     <None Include="SpyPlaybackNewUI1_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

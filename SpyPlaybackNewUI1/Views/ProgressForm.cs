@@ -33,8 +33,8 @@ namespace SpyandPlaybackTestTool.Views
 
             if(Form1.playbackstatus.Equals(false) && Form1.playbacksuccess.Equals(true))
             {
+                timer1.Stop();
                 progressBar1.Value = 100;
-                this.TopMost = false;
             }
 
             #region Draw % text
@@ -55,7 +55,7 @@ namespace SpyandPlaybackTestTool.Views
 
         private void ProgressForm_Load(object sender, EventArgs e)
         {
-            //timer1.Start();
+            timer1.Start();
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(workingArea.Right - Size.Width,
@@ -64,7 +64,7 @@ namespace SpyandPlaybackTestTool.Views
 
         private void ProgressForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //timer1.Stop();
+            timer1.Stop();
             progressBar1.Value = 0;
             this.Hide();
             this.Parent = null;
@@ -82,11 +82,16 @@ namespace SpyandPlaybackTestTool.Views
 
         private void ProgressForm_Activated(object sender, EventArgs e)
         {
-            //timer1.Start();
+            timer1.Start();
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(workingArea.Right - Size.Width,
                           workingArea.Bottom - Size.Height);
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
 
         }
     }

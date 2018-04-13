@@ -67,6 +67,7 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
+            this.cbxProgressBar = new System.Windows.Forms.CheckBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.TestSteps = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Index1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -89,7 +90,6 @@
             this.ConsolePanelPush = new System.Windows.Forms.RichTextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ResultPanelPush = new System.Windows.Forms.RichTextBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,12 +100,11 @@
             this.helpsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -426,6 +425,7 @@
             this.flowLayoutPanel2.Controls.Add(this.btnRemove);
             this.flowLayoutPanel2.Controls.Add(this.btnMoveUp);
             this.flowLayoutPanel2.Controls.Add(this.btnMoveDown);
+            this.flowLayoutPanel2.Controls.Add(this.cbxProgressBar);
             resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             // 
@@ -476,6 +476,13 @@
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             this.btnMoveDown.MouseEnter += new System.EventHandler(this.btnMoveDown_MouseEnter);
+            // 
+            // cbxProgressBar
+            // 
+            resources.ApplyResources(this.cbxProgressBar, "cbxProgressBar");
+            this.cbxProgressBar.Name = "cbxProgressBar";
+            this.cbxProgressBar.UseVisualStyleBackColor = true;
+            this.cbxProgressBar.CheckedChanged += new System.EventHandler(this.cbxProgressBar_CheckedChanged);
             // 
             // dataGridView2
             // 
@@ -702,6 +709,11 @@
             this.guideToolStripMenuItem.Name = "guideToolStripMenuItem";
             resources.ApplyResources(this.guideToolStripMenuItem, "guideToolStripMenuItem");
             // 
+            // optionToolStripMenuItem
+            // 
+            this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
+            resources.ApplyResources(this.optionToolStripMenuItem, "optionToolStripMenuItem");
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -709,11 +721,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // optionToolStripMenuItem
-            // 
-            this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            resources.ApplyResources(this.optionToolStripMenuItem, "optionToolStripMenuItem");
             // 
             // Form1
             // 
@@ -727,6 +734,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -762,6 +770,7 @@
             this.tctrlPlayback.ResumeLayout(false);
             this.tpgPlaybackTable.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.tpgPlaybackScript.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
@@ -782,7 +791,6 @@
         }
 
         #endregion
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
@@ -848,7 +856,6 @@
         private System.Windows.Forms.ToolStripStatusLabel greencircleTip;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripStatusLabel redcircleTip;
-        private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.DataGridViewTextBoxColumn TestSteps;
         private System.Windows.Forms.DataGridViewTextBoxColumn Index1;
@@ -858,6 +865,7 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn Actions;
         private System.Windows.Forms.DataGridViewTextBoxColumn InputValue;
         private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
+        private System.Windows.Forms.CheckBox cbxProgressBar;
     }
 }
 
