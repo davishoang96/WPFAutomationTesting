@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutomationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -36,6 +37,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,7 +122,12 @@
             this.button1.TabIndex = 5;
             this.button1.Text = "Capture to file";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // HighlightForm
             // 
@@ -134,6 +141,7 @@
             this.Name = "HighlightForm";
             this.Text = "Inspector";
             this.TopMost = true;
+            this.Activated += new System.EventHandler(this.HighlightForm_Activated);
             this.Load += new System.EventHandler(this.HighlightForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -150,5 +158,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

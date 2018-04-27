@@ -11,9 +11,6 @@ namespace SpyandPlaybackTestTool.Actions
         public SpyObject SpyObject { get; set; }
         public UiElement UiElement;
         public bool Result;
-        public bool IsExist;
-        public bool IsNotExist;
-
         public abstract void DoExecute();
     }
 }

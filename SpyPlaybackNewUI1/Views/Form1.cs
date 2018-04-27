@@ -25,28 +25,14 @@ namespace SpyandPlaybackTestTool
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// GU.WPF UiElement
-        /// </summary>
         private IReadOnlyList<UiElement> ElementList;
 
-
-        /// <summary>
-        /// Store UiElement of the AUT 
-        /// </summary>
         private SpyObject[] SpyObjectList;
-
-        /// <summary>
-        /// Store playback steps
-        /// </summary>
         private PlaybackObject[] PlaybackObjectList;
         //private ScriptFile[] scriptFiles;
-            
-        /// <summary>
-        /// Store lists of playback scripts
-        /// </summary>
         private List<ScriptFile> scriptFiles = new List<ScriptFile>();
         private Process thisProc = Process.GetCurrentProcess();
+        public SafeDataGridView sdgv = new SafeDataGridView();
 
         public static Process AUTPROC;
 
@@ -65,12 +51,6 @@ namespace SpyandPlaybackTestTool
         /// </summary>
         public static bool playbackstatus;
 
-
-        /// <summary>
-        /// Get, set playback is success or not
-        /// </summary>
-        public static bool playbacksuccess;
-
         /// <summary>
         /// Use for Stop playback while running
         /// </summary>
@@ -83,9 +63,34 @@ namespace SpyandPlaybackTestTool
         public bool ScenarioStatus;
 
         /// <summary>
+        /// Playback percentage
+        /// </summary>
+        public int percentage;
+
+        /// <summary>
+        /// Scenarios percentage
+        /// </summary>
+        public int s_percentage;
+
+        /// <summary>
+        /// Sum all steps from test script to calculate percentage for each step
+        /// </summary>
+        public int SumAllSteps;
+
+        /// <summary>
         /// Progress Form instance
         /// </summary>
         ProgressForm pf = new ProgressForm();
+
+
+        /// <summary>
+        /// THREADING
+        /// </summary>
+        private Thread Th_SPY;
+        private Thread Th_CLEARVALUE;
+        private Thread Th_PBTSCRIPT;
+        private Thread Th_PBTSTEP;
+        private Thread Th_PBScenario;
 
         #endregion Variables
 
@@ -97,11 +102,12 @@ namespace SpyandPlaybackTestTool
         private void Form1_Load(object sender, EventArgs e)
         {
             log.Info("PROGRAM STARTED");
-            
+
             this.KeyPreview = true;
 
             ResultPanelPush.ReadOnly = true;
             ConsolePanelPush.ReadOnly = true;
+
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.Columns[0].Visible = false;
@@ -116,7 +122,7 @@ namespace SpyandPlaybackTestTool
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView2.AllowUserToAddRows = false;
             dataGridView2.RowHeadersVisible = false;
-            
+            dataGridView2.SelectionMode = DataGridViewSelectionMode.CellSelect;
             //dataGridView2.Columns[1].Visible = false;
 
             redcircleTip.Visible = true;
@@ -127,24 +133,17 @@ namespace SpyandPlaybackTestTool
 
             //this.MaximumSize = new Size(XX, YY);
             this.MinimumSize = new Size(1280, 720);
-            
+
             //pf.Show();
         }
 
         private void btnAttach_Click(object sender, EventArgs e)
         {
-            ProcessForm nw = new ProcessForm();
-            nw.Show();
-           
+            ProcessForm PFM = ProcessForm.GetInstance();
+            PFM.Show();
+
         }
 
-        #region Realtime AUT checking
-
-        /// <summary>
-        /// Realtime checking AUT if it's alive or not.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Form1_Activated(object sender, EventArgs e)
         {
             if (ProcessForm.isAttached.Equals(false))
@@ -156,21 +155,18 @@ namespace SpyandPlaybackTestTool
             else if (ProcessForm.isAttached.Equals(true))
             {
                 AUTPROC = WindowInteraction.GetProcess(ProcessForm.targetproc);
-                //WindowInteraction.FocusWindow(thisProc);
+                WindowInteraction.FocusWindowNormal(thisProc);
                 toolStripStatusLabel1.Text = ProcessForm.targetproc;
                 redcircleTip.Visible = false;
                 greencircleTip.Visible = true;
-    
+
                 timer1.Start();
+
             }
         }
 
 
-        /// <summary>
-        /// Realtime checking AUT if it's alive or not.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (AUTPROC.HasExited)
@@ -181,30 +177,26 @@ namespace SpyandPlaybackTestTool
                 AUTPROC = null;
                 redcircleTip.Visible = true;
                 greencircleTip.Visible = false;
-  
+
                 timer1.Stop();
-                
+
                 System.Windows.Forms.MessageBox.Show("The AUT: " + ProcessForm.targetproc + " has been terminated.", "Warning!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-        #endregion
 
-        #region SPY
         // Spy Button
         private void button1_Click(object sender, EventArgs e)
         {
-            //Spy("normal");
-            Thread T_SPY = new Thread(() => Spy("normal"));
-            T_SPY.Priority = ThreadPriority.Highest;
-            T_SPY.IsBackground = true;
-            T_SPY.Start();
-            T_SPY.Join();
+            Th_SPY = new Thread(() => Spy("normal"));
+            Th_SPY.Start();
+            Th_SPY.Join();
         }
 
         /// <summary>
         /// SPY FUNCTION
         /// </summary>
         /// <param name="mode">normal or respy</param>
+
         public void Spy(string mode)
         {
             ExceptionCode excode = new ExceptionCode();
@@ -220,17 +212,15 @@ namespace SpyandPlaybackTestTool
                 if (mode == "normal")
                 {
                     log.Info("BEGIN SPY");
-                    DoSpy.GetMainWindow();
                     ConsolePanelPush.AppendText(DateTime.Now + " - " + "BEGIN SPY" + Environment.NewLine);
                 }
                 if (mode == "respy")
                 {
                     log.Info("BEGIN RESPY");
-                    DoSpy.GetMainWindow();
                     ConsolePanelPush.AppendText(DateTime.Now + " - " + "BEGIN RESPY" + Environment.NewLine);
                 }
 
-                ElementList = DoSpy.SearchbyFramework("WPF");
+                ElementList = GrabAUT.SearchbyFramework("WPF");
 
                 dataGridView1.Rows.Clear();
                 dataGridView1.AllowUserToAddRows = true;
@@ -241,6 +231,9 @@ namespace SpyandPlaybackTestTool
                 comboBox1.Enabled = false;
                 dataGridView1.Enabled = true;
                 dataGridView2.Enabled = true;
+
+                dataGridView1.Rows.Clear();
+                dataGridView1.Refresh();
 
                 for (int i = 0; i < ElementList.Count; i++)
                 {
@@ -283,12 +276,13 @@ namespace SpyandPlaybackTestTool
                 //CaptureToImage.DoCapture(ProcessName);
                 if (mode == "normal")
                 {
-                    WindowInteraction.FocusWindow(thisProc);
+                    WindowInteraction.FocusWindowNormal(thisProc);
                 }
                 if (mode == "respy")
                 {
                     WindowInteraction.FocusWindow(AUTPROC);
                 }
+
             }
             catch (Exception ex)
             {
@@ -321,37 +315,37 @@ namespace SpyandPlaybackTestTool
                     WindowInteraction.FocusWindowNormal(thisProc);
                 }
             }
+
         }
 
-        #endregion
-
-        #region PLAYBACK TEST SCRIPT
         //Json Playback button
         public void btnPlaybackTestScript_Click(object sender, EventArgs e)
         {
-            pf.Show();
+
             playbackprogress = 0;
             playbackstatus = true;
             stop_playback = false;
 
             if (ProcessForm.targetproc == null)
             {
-                System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Playback Test Script function!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Playback Test Script function!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
             if (ValidateJSON(rtxtScript.Text) == false)
             {
-                System.Windows.Forms.MessageBox.Show("Test Script format is invalid Json!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Test Script format is invalid Json!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Thread t1 = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
-            t1.Start();
-            t1.Join();
+            pf.Show();
+
+            Th_CLEARVALUE = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
+            Th_CLEARVALUE.Start();
+            Th_CLEARVALUE.Join();
 
             readJson();
 
-            ElementList = DoSpy.SearchbyFramework("WPF");
+            ElementList = GrabAUT.SearchbyFramework("WPF");
 
             //WindowInteraction.FocusWindow(targetProc);
             ResultPanelPush.Clear();
@@ -359,8 +353,8 @@ namespace SpyandPlaybackTestTool
             log.Info("BEGIN PLAYBACK");
             ConsolePanelPush.AppendText(Environment.NewLine);
 
-            Thread t2 = new Thread(() => PlaybackTestScript());
-            t2.Start();
+            Th_PBTSCRIPT = new Thread(() => PlaybackTestScript());
+            Th_PBTSCRIPT.Start();
 
             ConsolePanelPush.AppendText(DateTime.Now + " - " + "DONE PLAYBACK");
             log.Info("DONE PLAYBACK");
@@ -376,19 +370,27 @@ namespace SpyandPlaybackTestTool
             ExceptionCode excode = new ExceptionCode();
             try
             {
-                int percentage = 100 / PlaybackObjectList.Count();
+                if (ScenarioStatus.Equals(false))
+                {
+                    percentage = 100 / PlaybackObjectList.Count();
+                }
+
+                if (ScenarioStatus.Equals(true))
+                {
+                    log.Info("Multiple playbackscript is on");
+                }
 
                 for (int i = 0; i < PlaybackObjectList.Count(); i++)
                 {
-                    if(stop_playback.Equals(true))
+                    if (stop_playback.Equals(true))
                     {
                         WindowInteraction.FocusWindow(thisProc);
                         return;
                     }
 
                     WindowInteraction.FocusWindow(AUTPROC);
-                    if (DoSpy.MainWindow.ModalWindows.Count > 0)
-                        ElementList = DoSpy.SearchbyFramework("WPF");
+                    if (GrabAUT.MainWindow.ModalWindows.Count > 0)
+                        ElementList = GrabAUT.SearchbyFramework("WPF");
 
                     // Check if Json type is valid
                     if (PlaybackObjectList[i].type == "SendKey" || PlaybackObjectList[i].type == "Button" ||
@@ -568,19 +570,39 @@ namespace SpyandPlaybackTestTool
                         ResultPanelPush.AppendText(DateTime.Now + " - " + "FAILED at " + "JSON INDEX " + PlaybackObjectList[i].index + " - " + "HAS AN INVALID TYPE: " + PlaybackObjectList[i].type);
                         ResultPanelPush.AppendText(Environment.NewLine);
                     }
-                    if (DoSpy.MainWindow.ModalWindows.Count > 0)
-                        ElementList = DoSpy.SearchbyFramework("WPF");
-                    playbackprogress += percentage;
-                }
-                playbackstatus = false;
+                    if (GrabAUT.MainWindow.ModalWindows.Count > 0)
+                    {
+                        ElementList = GrabAUT.SearchbyFramework("WPF");
+                    }
 
-                if(ScenarioStatus.Equals(true))
-                {
-                    
+                    if (ScenarioStatus.Equals(false))
+                    {
+                        playbackprogress += percentage;
+
+                    }
+
+
+                    if (ScenarioStatus.Equals(true))
+                    {
+                        playbackprogress += s_percentage;
+                        log.Info(s_percentage);
+                    }
                 }
-                else
-                WindowInteraction.FocusWindow(thisProc);
-                log.Info("");
+
+
+
+                if (ScenarioStatus.Equals(true) && playbackstatus.Equals(false))
+                {
+                    //playbackprogress = 100;
+                }
+                else if (ScenarioStatus.Equals(false) && playbackstatus.Equals(true))
+                {
+                    pf.Hide();
+                    playbackstatus = false;
+                    playbackprogress = 100;
+                    WindowInteraction.FocusWindow(thisProc);
+                }
+
             }
             catch (Exception ex)
             {
@@ -636,46 +658,21 @@ namespace SpyandPlaybackTestTool
             }
         }
 
-        #endregion
-
-
-        #region PLAYBACK TEST STEP
         // Playback button on test steps table // Add log
         private void btnPlaybackTestSteps_Click(object sender, EventArgs e)
         {
-            if (ProcessForm.targetproc == null)
-            {
-                System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Playback Test Steps function!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (dataGridView2.Rows.Count <= 0)
-            {
-                System.Windows.Forms.MessageBox.Show("There is no data!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
             playbackprogress = 0;
             playbackstatus = true;
             stop_playback = false;
-  
-            pf.TopMost = true;
-
-            if (Settings.ShowProgressBar.Equals(true))
-                pf.Show();
-            else
-                pf.Hide();
 
 
-            Thread T_ClearValue = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
-            T_ClearValue.Start();
-            T_ClearValue.Join();
 
-            Thread T_PlaybackTestSteps = new Thread(()=>PlaybackTestSteps());
-            T_PlaybackTestSteps.Priority = ThreadPriority.Highest;
-            T_PlaybackTestSteps.Start();
-            T_PlaybackTestSteps.IsBackground = true;
-        
-             
+            Th_CLEARVALUE = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
+            Th_CLEARVALUE.Start();
+            Th_CLEARVALUE.Join();
+
+            Th_PBTSTEP = new Thread(() => PlaybackTestSteps());
+            Th_PBTSTEP.Start();
         }
 
         /// <summary>
@@ -684,20 +681,33 @@ namespace SpyandPlaybackTestTool
         public void PlaybackTestSteps()
         {
             ExceptionCode excode = new ExceptionCode();
-            
-            
-            
+
+            if (ProcessForm.targetproc == null)
+            {
+                System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Playback Test Steps function!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (dataGridView2.Rows.Count <= 0)
+            {
+                System.Windows.Forms.MessageBox.Show("There is no data!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            pf.Show();
 
             ResultPanelPush.Clear();
             ConsolePanelPush.AppendText(DateTime.Now + " - BEGIN PLAYBACK" + Environment.NewLine);
- 
+
             try
             {
+                // Open ProgressBAR
+
                 int pbindex = 0;
-                
+
                 PlaybackObjectList = new PlaybackObject[dataGridView2.Rows.Count];
 
-                ElementList = DoSpy.SearchbyFramework("WPF");
+                ElementList = GrabAUT.SearchbyFramework("WPF");
+
                 foreach (DataGridViewRow row in dataGridView2.Rows)
                 {
                     PlaybackObjectList[pbindex] = new PlaybackObject();
@@ -708,20 +718,24 @@ namespace SpyandPlaybackTestTool
                     PlaybackObjectList[pbindex].action = (string)row.Cells[5].Value;
                     if (PlaybackObjectList[pbindex].action == "Select" || PlaybackObjectList[pbindex].action == "Unselect")
                     {
-                        PlaybackObjectList[pbindex].text = "";
+                        PlaybackObjectList[pbindex].text = null;
                         if (PlaybackObjectList[pbindex].type != "CheckBox")
-                            PlaybackObjectList[pbindex].itemIndex = int.Parse(row.Cells[6].Value.ToString());
+                        {
+                            if (PlaybackObjectList[pbindex].type == "ComboBox")
+                            {
+                                PlaybackObjectList[pbindex].itemIndex = 0;
+                            }
+                            else
+                            {
+                                PlaybackObjectList[pbindex].itemIndex = int.Parse(row.Cells[6].Value.ToString());
+                            }
+
+                        }
+
                     }
                     else if (PlaybackObjectList[pbindex].action == "SetText" ||
                         PlaybackObjectList[pbindex].action == "WaitEnable" ||
-                        PlaybackObjectList[pbindex].action == "SendKey" ||
-                        PlaybackObjectList[pbindex].action == "IsExist" ||
-                        PlaybackObjectList[pbindex].action == "IsNotExist" ||
-                        PlaybackObjectList[pbindex].action == "IsEmpty" ||
-                        PlaybackObjectList[pbindex].action == "IsEqual" ||
-                        PlaybackObjectList[pbindex].action == "IsReadOnly" ||
-                        PlaybackObjectList[pbindex].action == "IsEnabled" ||
-                        PlaybackObjectList[pbindex].action == "IsSelected")
+                        PlaybackObjectList[pbindex].action == "SendKey")
                     {
                         PlaybackObjectList[pbindex].text = (string)row.Cells[6].Value; ;
                         PlaybackObjectList[pbindex].itemIndex = -1;
@@ -730,23 +744,24 @@ namespace SpyandPlaybackTestTool
                     pbindex++;
                 }
 
-                // Percentage for ProgressBar
                 int percentage = 100 / PlaybackObjectList.Count();
 
                 for (int i = 0; i < PlaybackObjectList.Count(); i++)
                 {
+                    // Call ElemenList again to spy another screen before playback
+                    //ElementList = DoSpy.SearchbyFramework("WPF");
 
-                    if(stop_playback.Equals(true))
+                    if (stop_playback.Equals(true))
                     {
                         WindowInteraction.FocusWindow(thisProc);
                         return;
                     }
 
                     int flag = 0;
-                    if (DoSpy.MainWindow.ModalWindows.Count > 0)
+                    if (GrabAUT.MainWindow.ModalWindows.Count > 0)
                     {
                         flag = 1;
-                        ElementList = DoSpy.SearchbyFramework("WPF");
+                        ElementList = GrabAUT.SearchbyFramework("WPF");
                     }
 
                     // Add more playback actions here
@@ -824,7 +839,7 @@ namespace SpyandPlaybackTestTool
                             break;
 
                         case "ComboBoxEdit":
-                            AbsAction ComboBoxEditAction = new SpyandPlaybackTestTool.Actions.ComboBoxEditAction();
+                            AbsAction ComboBoxEditAction = new ComboBoxEditAction();
                             ComboBoxEditAction.PlaybackObject = PlaybackObjectList[i];
                             ComboBoxEditAction.UiElement = ElementList[PlaybackObjectList[i].index];
                             ComboBoxEditAction.DoExecute();
@@ -846,7 +861,7 @@ namespace SpyandPlaybackTestTool
                             break;
 
                         case "DataGrid":
-                            AbsAction DataGridAction = new SpyandPlaybackTestTool.Actions.DataGridAction();
+                            AbsAction DataGridAction = new DataGridAction();
                             DataGridAction.PlaybackObject = PlaybackObjectList[i];
                             DataGridAction.UiElement = ElementList[PlaybackObjectList[i].index];
                             DataGridAction.DoExecute();
@@ -909,21 +924,23 @@ namespace SpyandPlaybackTestTool
                     if (flag == 1)
                     {
                         flag = 0;
-                        ElementList = DoSpy.SearchbyFramework("WPF");
+                        ElementList = GrabAUT.SearchbyFramework("WPF");
                     }
                     playbackprogress += percentage;
                 }
 
                 playbackstatus = false;
-                playbacksuccess = true;
                 playbackprogress = 100;
-   
-                pf.TopMost = false;
 
-                Spy("respy");
+                Th_SPY = new Thread(() => Spy("respy"));
+                Th_SPY.Start();
+                Th_SPY.Join();
+
                 ConsolePanelPush.AppendText(DateTime.Now + " - DONE PLAYBACK");
                 ConsolePanelPush.AppendText(Environment.NewLine);
-                WindowInteraction.FocusWindow(thisProc);
+                WindowInteraction.FocusWindowNormal(thisProc);
+
+                pf.Hide();
             }
             catch (Exception ex)
             {
@@ -968,133 +985,8 @@ namespace SpyandPlaybackTestTool
                     ConsolePanelPush.AppendText(Environment.NewLine);
                 }
             }
-            WindowInteraction.FocusWindow(thisProc);
+            WindowInteraction.FocusWindowNormal(thisProc);
         }
-        #endregion
-
-
-        #region Code of Kiet
-        /*private void btnAdd_Click(object sender, EventArgs e)
-        {
-            dataGridView2.AllowUserToAddRows = true;
-            int count = 0;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
-                if (chk.Value == chk.TrueValue)
-                {
-                    count++;
-                }
-            }
-            int[] rowIndex = new int[count];
-            int index = 0;
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
-                if (chk.Value == chk.TrueValue)
-                {
-                    rowIndex[index] = (int)row.Cells[1].Value;
-                    index++;
-                }
-            }
-            int contIndex = dataGridView2.Rows.Count;
-            for (int i = 0; i < count; i++)
-            {
-                DataGridViewRow row = (DataGridViewRow)dataGridView2.Rows[i].Clone();
-
-                if (dataGridView2.Rows.Count > 0)
-                {
-                    row.Cells[0].Value = contIndex;
-                }
-                else
-                {
-                    row.Cells[0].Value = i + 1;
-                }
-                row.Cells[1].Value = SpyObjectList[rowIndex[i]].index;
-                row.Cells[2].Value = SpyObjectList[rowIndex[i]].automationId;
-                row.Cells[3].Value = SpyObjectList[rowIndex[i]].name;
-                row.Cells[4].Value = SpyObjectList[rowIndex[i]].type;
-                ((DataGridViewComboBoxCell)row.Cells[5]).Items.Clear();
-
-                // Add more actions here
-                switch ((string)row.Cells[4].Value)
-                {
-                    case "Button":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Click");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEnabled");
-                        break;
-
-                    case "RadioButton":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Click");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsChecked");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsUnChecked");
-                        break;
-
-                    case "TextBox":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEmpty");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEqual");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsReadOnly");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEnabled");
-                        break;
-
-                    case "PasswordBox":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
-                        break;
-
-                    case "ComboBox":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Select");
-                        break;
-
-                    case "ComboBoxEdit":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Select");
-                        break;
-
-                    case "AutoCompleteCombobox":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Select");
-                        break;
-
-                    case "CheckBox":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Select");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Unselect");
-                        break;
-
-                    case "DataGrid":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Select");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Unselect");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("DoubleClick");
-                        break;
-
-                    case "TabItem":
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("Click");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsSelected");
-                        break;
-
-                    default:
-                        break;
-                }
-                dataGridView2.Rows.Add(row);
-                contIndex++;
-                row.Cells[0].ReadOnly = true;
-                row.Cells[2].ReadOnly = true;
-                row.Cells[3].ReadOnly = true;
-                row.Cells[4].ReadOnly = true;
-            }
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                DataGridViewCheckBoxCell cb = (DataGridViewCheckBoxCell)row.Cells[0];
-                if (cb != null && cb.Value == cb.TrueValue)
-                {
-                    cb.Value = false;
-                    cb.Value = cb.FalseValue;
-                }
-            }
-            dataGridView2.AllowUserToAddRows = false;
-        }*/
-        #endregion
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -1108,14 +1000,17 @@ namespace SpyandPlaybackTestTool
         {
             if (dataGridView1.SelectedCells.Count <= 0)
             {
-                System.Windows.Forms.MessageBox.Show("There is no selected cell!", "Lack Of Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                System.Windows.Forms.MessageBox.Show("There is no selected cell!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             dataGridView2.AllowUserToAddRows = true;
+            //List<int> selectedCellList = new List<int>();
             List<int> indexList = new List<int>();
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
+                //selectedCellList.Add(cell.RowIndex);
                 indexList.Add(Convert.ToInt32(dataGridView1.Rows[cell.RowIndex].Cells[1].Value));
+                //System.Windows.Forms.MessageBox.Show(cell.RowIndex.ToString());
             }
 
             var dict = new Dictionary<int, int>();
@@ -1131,6 +1026,10 @@ namespace SpyandPlaybackTestTool
             }
             officialIndexList.Sort();
 
+            //foreach (var item in rowIndexList)
+            //{
+            //    System.Windows.Forms.MessageBox.Show(item.ToString());
+            //}
             int contIndex = dataGridView2.Rows.Count;
             for (int i = 0; i < officialIndexList.Count; i++)
             {
@@ -1155,10 +1054,6 @@ namespace SpyandPlaybackTestTool
 
                     case "TextBox":
                         ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEmpty");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEqual");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsReadOnly");
-                        ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("IsEnabled");
                         break;
 
                     case "PasswordBox":
@@ -1214,19 +1109,23 @@ namespace SpyandPlaybackTestTool
         }
 
 
-        
+
         private void btnRemove_Click(object sender, EventArgs e)
         {
             if (dataGridView2.Rows.Count == 0)
-                System.Windows.Forms.MessageBox.Show("There is no data!", "Lack Of Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                System.Windows.Forms.MessageBox.Show("There is no data!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
             {
                 DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you really want to remove this row?", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 if (dialogResult == DialogResult.Yes)
                 {
                     int i = 1;
+                    //dataGridView2.MultiSelect = true;
                     foreach (DataGridViewRow row in dataGridView2.SelectedRows)
+                        //if (row.Selected == true)
                         dataGridView2.Rows.Remove(row);
+                    //dataGridView2.Rows.RemoveAt(row.Index);
+                    //dataGridView2.ClearSelection();
                     foreach (DataGridViewRow row in dataGridView2.Rows)
                     {
                         row.Cells[0].Value = i;
@@ -1271,6 +1170,7 @@ namespace SpyandPlaybackTestTool
 
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+
             textBox1.Text = "";
             dataGridView1.Rows.Clear();
             dataGridView1.AllowUserToAddRows = true;
@@ -1367,12 +1267,59 @@ namespace SpyandPlaybackTestTool
                     }
                     break;
 
+                case "RichTextBox":
+                    for (int i = 0; i < SpyObjectList.Count(); i++)
+                    {
+                        if (SpyObjectList[i].type == "RichTextBox")
+                        {
+                            int rowId = dataGridView1.Rows.Add();
+                            DataGridViewRow row = dataGridView1.Rows[rowId];
+                            row.Cells[1].Value = SpyObjectList[i].index;
+                            row.Cells[2].Value = SpyObjectList[i].automationId;
+                            row.Cells[3].Value = SpyObjectList[i].name;
+                            row.Cells[4].Value = SpyObjectList[i].type;
+                        }
+                    }
+                    break;
+
+                case "CheckBox":
+                    for (int i = 0; i < SpyObjectList.Count(); i++)
+                    {
+                        if (SpyObjectList[i].type == "CheckBox")
+                        {
+                            int rowId = dataGridView1.Rows.Add();
+                            DataGridViewRow row = dataGridView1.Rows[rowId];
+                            row.Cells[1].Value = SpyObjectList[i].index;
+                            row.Cells[2].Value = SpyObjectList[i].automationId;
+                            row.Cells[3].Value = SpyObjectList[i].name;
+                            row.Cells[4].Value = SpyObjectList[i].type;
+                        }
+                    }
+                    break;
+
+                case "TabItem":
+                    for (int i = 0; i < SpyObjectList.Count(); i++)
+                    {
+                        if (SpyObjectList[i].type == "TabItem")
+                        {
+                            int rowId = dataGridView1.Rows.Add();
+                            DataGridViewRow row = dataGridView1.Rows[rowId];
+                            row.Cells[1].Value = SpyObjectList[i].index;
+                            row.Cells[2].Value = SpyObjectList[i].automationId;
+                            row.Cells[3].Value = SpyObjectList[i].name;
+                            row.Cells[4].Value = SpyObjectList[i].type;
+                        }
+                    }
+                    break;
+
+
                 // Add more types here
                 case "Interactive Controls":
 
                     for (int i = 0; i < SpyObjectList.Count(); i++)
                     {
-                        if ((SpyObjectList[i].type == "ComboBox" || SpyObjectList[i].type == "ComboBoxEdit" ||
+                        if ((SpyObjectList[i].type == "CheckBox" || SpyObjectList[i].type == "RichTextBox" ||
+                            SpyObjectList[i].type == "ComboBox" || SpyObjectList[i].type == "ComboBoxEdit" ||
                             SpyObjectList[i].type == "DataGrid" || SpyObjectList[i].type == "TextBox" ||
                             SpyObjectList[i].type == "Button" || SpyObjectList[i].type == "RadioButton" ||
                             SpyObjectList[i].type == "AutoCompleteCombobox" || SpyObjectList[i].type == "TabItem" ||
@@ -1406,17 +1353,19 @@ namespace SpyandPlaybackTestTool
             dataGridView1.AllowUserToAddRows = false;
         }
 
-
-        /// <summary>
-        /// Open Inspector Window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void InspectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            HighlightForm HLightForm = new HighlightForm();
-            HLightForm.ProcessName = ProcessForm.targetproc;
-            HLightForm.Show();
+            if (ProcessForm.isAttached.Equals(false))
+            {
+                System.Windows.Forms.MessageBox.Show("NO AUT TO INSPECT", "Warning!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+            }
+            else
+            {
+                HighlightForm HLightForm = HighlightForm.GetInstance();
+                HLightForm.ProcessName = ProcessForm.targetproc;
+                HLightForm.Show();
+            }
         }
 
         private void btnCreateTestSteps_Click(object sender, EventArgs e)
@@ -1474,7 +1423,7 @@ namespace SpyandPlaybackTestTool
                         ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
                         if (PlaybackObjectList[i].action == "SetText")
                             row.Cells[5].Value = PlaybackObjectList[i].action;
-        
+
                         break;
 
                     case "RichTextBox":
@@ -1487,7 +1436,7 @@ namespace SpyandPlaybackTestTool
                         ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
                         if (PlaybackObjectList[i].action == "SetText")
                             row.Cells[5].Value = PlaybackObjectList[i].action;
-                          break;
+                        break;
 
                     case "ComboBox":
                         ((DataGridViewComboBoxCell)row.Cells[5]).Items.Add("SetText");
@@ -1621,7 +1570,7 @@ namespace SpyandPlaybackTestTool
         {
             if (dataGridView2.Rows.Count == 0)
             {
-                System.Windows.Forms.MessageBox.Show("There is no data!", "Lack Of Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                System.Windows.Forms.MessageBox.Show("There is no data!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -1825,12 +1774,13 @@ namespace SpyandPlaybackTestTool
                         else
                         {
                             clbTestScriptList.Items.Add(scriptFiles[k].Name);
+                            //clbTestScriptList.SetItemChecked(j, true);
                         }
                         k++;
                         j++;
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1860,6 +1810,7 @@ namespace SpyandPlaybackTestTool
         /// </summary>
         public void readJson()
         {
+
             string readText = rtxtScript.Text;
             dynamic controls = JsonConvert.DeserializeObject(readText);
             try
@@ -1876,7 +1827,6 @@ namespace SpyandPlaybackTestTool
                     PlaybackObjectList[pbindex].action = control.Controller.action;
                     PlaybackObjectList[pbindex].text = control.Controller.text;
                     PlaybackObjectList[pbindex].itemIndex = control.Controller.itemIndex;
-                    //System.Windows.Forms.MessageBox.Show(PlaybackObjectList[pbindex].type.ToString());
                     pbindex++;
                 }
             }
@@ -1889,11 +1839,11 @@ namespace SpyandPlaybackTestTool
             }
         }
 
-        #region HighLight Words
+
         /// <summary>
         /// Check a specific keyword and change its color.
         /// </summary>
-        /// <param name="words">String</param>
+        /// <param name="word">String</param>
         /// <param name="color"></param>
         /// <param name="StartIndex"></param>
         public void CheckKeyWord(string word, Color color, int StartIndex)
@@ -1937,27 +1887,6 @@ namespace SpyandPlaybackTestTool
                 }
             }
         }
-
-        private void ResultPanelPush_TextChanged_1(object sender, EventArgs e)
-        {
-            this.CheckKeyWord("PASSED", Color.Green, 0);
-            this.CheckKeyWord("FAILED", Color.Red, 0);
-            this.CheckKeyWord("item id", Color.OrangeRed, 0);
-            this.CheckKeyWord("ClassType", Color.Blue, 0);
-            this.CheckKeyWord("PLAYBACK ON", Color.Purple, 0);
-        }
-
-        private void ConsolePanelPush_TextChanged(object sender, EventArgs e)
-        {
-            this.CheckKeyWord("SCENARIO", Color.Green, 0);
-            this.CheckKeyWord("DONE PLAYBACK", Color.Green, 0);
-
-            this.CheckKeyWord("AUT NOT FOUND", Color.Red, 0);
-            this.CheckKeyWord("INPUT VALUE WAS OUT OF RANGE", Color.Red, 0);
-            this.CheckKeyWord("AUT QUIT DURING PLAYBACK OPERATION", Color.Red, 0);
-            this.CheckKeyWord("CANNOT SPY THIS PROGRAM", Color.Red, 0);
-        }
-        #endregion
 
         private void btnMoveUpCLB_Click(object sender, EventArgs e)
         {
@@ -2102,59 +2031,141 @@ namespace SpyandPlaybackTestTool
 
         private void btnPlaybackScenario_Click(object sender, EventArgs e)
         {
+            pf.Show();
+
+            ScenarioStatus = true;
+
+            Th_PBScenario = new Thread(() => runScenario());
+            Th_PBScenario.Start();
+        }
+
+        public void runScenario()
+        {
             try
             {
                 if (ProcessForm.isAttached == false)
                 {
-                    System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Scenario Playback function!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    System.Windows.Forms.MessageBox.Show("Please attach AUT process to execute Scenario Playback function!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
                 if (clbTestScriptList.CheckedItems.Count <= 0)
                 {
-                    System.Windows.Forms.MessageBox.Show("There is no checked Test Script file!", "Lack Of Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    System.Windows.Forms.MessageBox.Show("There is no checked Test Script file!", "WARNING!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
+                pf.Show();
+
                 List<int> indexList = new List<int>();
+
+
+
                 foreach (var item in clbTestScriptList.CheckedItems)
                 {
                     indexList.Add(clbTestScriptList.Items.IndexOf(item));
+
                 }
+
+
+                playbackprogress = 0;
+                SumAllSteps = 0;
+
+                stop_playback = false;
 
                 ResultPanelPush.Clear();
                 ConsolePanelPush.AppendText(DateTime.Now + " - " + "BEGIN SCENARIO PLAYBACK" + Environment.NewLine);
                 log.Info("BEGIN SCENARIO PLAYBACK");
 
-                ScenarioStatus = true;
+                for (int i = 0; i < indexList.Count; i++)
+                {
+                    clbTestScriptList.SelectedIndex = indexList[i];
+
+                    SumAllSteps += PlaybackObjectList.Count();
+                }
+
+                System.Windows.Forms.MessageBox.Show(indexList.Count.ToString());
+
+                double div = 100 / (double)SumAllSteps;
+                double temp = Math.Floor(div);
+                double frac = div - temp;
+
+                if (frac > 0.6)
+                {
+                    s_percentage = (int)Math.Ceiling(div);
+                }
+                else
+                {
+                    s_percentage = (int)Math.Floor(div);
+                }
 
                 for (int i = 0; i < indexList.Count; i++)
                 {
-                    
                     clbTestScriptList.SelectedIndex = indexList[i];
-                    //System.Windows.Forms.MessageBox.Show(rtxtScript.Text.ToString());
+
                     readJson();
 
-                    ElementList = DoSpy.SearchbyFramework("WPF");
-                    
-                    Thread t1 = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
-                    t1.Start();
-                    t1.Join();
-                    
-                    ResultPanelPush.AppendText(DateTime.Now + " - " + "PLAYBACK ON: " + clbTestScriptList.SelectedItem + Environment.NewLine);
-                    PlaybackTestScript();
+                    ElementList = GrabAUT.SearchbyFramework("WPF");
 
-                    ResultPanelPush.AppendText(Environment.NewLine);
+                    Th_CLEARVALUE = new Thread(() => ClearTextBox.ClearValue(ProcessForm.targetproc));
+                    Th_CLEARVALUE.Start();
+                    Th_CLEARVALUE.Join();
+
+                    if (stop_playback.Equals(false))
+                    {
+                        ResultPanelPush.AppendText(DateTime.Now + " - " + "PLAYBACK ON: " + clbTestScriptList.SelectedItem + Environment.NewLine);
+
+                        PlaybackTestScript();
+
+                        ResultPanelPush.AppendText(Environment.NewLine);
+                    }
+                    else
+                    {
+                        WindowInteraction.FocusWindowNormal(thisProc);
+                        ConsolePanelPush.AppendText(DateTime.Now + " - " + "CANCEL SCENARIO PLAYBACK" + Environment.NewLine);
+                        return;
+                    }
+
+
                 }
+
                 ConsolePanelPush.AppendText(DateTime.Now + " - " + "DONE SCENARIO PLAYBACK" + Environment.NewLine);
                 log.Info("DONE SCENARIO PLAYBACK");
+
+                if (playbackprogress > 100)
+                {
+                    playbackprogress = 100;
+                }
+
                 ScenarioStatus = false;
+
                 WindowInteraction.FocusWindow(thisProc);
+
+                pf.Hide();
             }
             catch
             {
                 var a = new Exception("NO AUT TO PLAYBACK");
                 ConsolePanelPush.AppendText(DateTime.Now + " - " + a + Environment.NewLine);
             }
+        }
+
+        private void ResultPanelPush_TextChanged_1(object sender, EventArgs e)
+        {
+            this.CheckKeyWord("PASSED", Color.Green, 0);
+            this.CheckKeyWord("FAILED", Color.Red, 0);
+            this.CheckKeyWord("item id", Color.OrangeRed, 0);
+            this.CheckKeyWord("ClassType", Color.Blue, 0);
+            this.CheckKeyWord("PLAYBACK ON", Color.Purple, 0);
+        }
+
+        private void ConsolePanelPush_TextChanged(object sender, EventArgs e)
+        {
+            this.CheckKeyWord("SCENARIO", Color.Green, 0);
+            this.CheckKeyWord("DONE PLAYBACK", Color.Green, 0);
+            this.CheckKeyWord("AUT NOT FOUND", Color.Red, 0);
+            this.CheckKeyWord("INPUT VALUE WAS OUT OF RANGE", Color.Red, 0);
+            this.CheckKeyWord("AUT QUIT DURING PLAYBACK OPERATION", Color.Red, 0);
+            this.CheckKeyWord("CANNOT SPY THIS PROGRAM", Color.Red, 0);
         }
 
         private void clbTestScriptList_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -2216,17 +2227,7 @@ namespace SpyandPlaybackTestTool
             AboutW.Show();
         }
 
-        private void viewLogsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-    
-        }
 
-
-        /// <summary>
-        /// Enable edited mode for selected cell
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void dataGridView2_CellClick_1(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -2246,13 +2247,6 @@ namespace SpyandPlaybackTestTool
             }
         }
 
-
-        /// <summary>
-        /// PlaybackLogger
-        /// </summary>
-        /// <param name="index">Index of the UiElement</param>
-        /// <param name="classname">Class of the UiElement</param>
-        /// <param name="result">Pass of Failed</param>
         private void PlaybackLogger(int index, string classname, bool result)
         {
             if (result == true)
@@ -2313,6 +2307,17 @@ namespace SpyandPlaybackTestTool
                     break;
                 case Keys.Alt | Keys.F4:
                     e.SuppressKeyPress = true;
+                    DialogResult dialogResults = System.Windows.Forms.MessageBox.Show("Do you really want to exit this program?", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+                    if (dialogResults == DialogResult.Yes)
+                    {
+                        // The user wants to exit the application. Close everything down.
+                        System.Windows.Forms.Application.Exit();
+                    }
+                    else if (dialogResults == DialogResult.No)
+                    {
+                        return;
+                    }
                     break;
                 case Keys.Control | Keys.O:
                     importToolStripMenuItem.PerformClick();
@@ -2343,6 +2348,8 @@ namespace SpyandPlaybackTestTool
             }
         }
 
+
+
         private void clbTestScriptList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
@@ -2354,7 +2361,7 @@ namespace SpyandPlaybackTestTool
                 DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Do you really want to delete this row?", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    
+
                     //foreach (var item in clbTestScriptList.SelectedItems)
                     //    clbTestScriptList.Items.Remove(item);
                     //scriptFiles.Clear();
@@ -2362,12 +2369,6 @@ namespace SpyandPlaybackTestTool
             }
         }
 
-
-        /// <summary>
-        /// View logs
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void viewLogsToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -2377,11 +2378,10 @@ namespace SpyandPlaybackTestTool
         }
 
 
-        /// <summary>
-        /// Tooltip for controls and buttons
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+
+
+
         #region tooltip
         private void btnPlaybackTestSteps_MouseEnter(object sender, EventArgs e)
         {
@@ -2421,18 +2421,125 @@ namespace SpyandPlaybackTestTool
             toolTip1.SetToolTip(btnAdd, "Add UI objects to Playback");
         }
 
+
+
         #endregion
 
-        private void cbxProgressBar_CheckedChanged(object sender, EventArgs e)
-        {
-            if(cbxProgressBar.Checked.Equals(true))
-            {
-                Settings.ShowProgressBar = true;
+        private Rectangle dragBoxFromMouseDown;
+        private int rowIndexFromMouseDown;
+        private int rowIndexOfItemUnderMouseToDrop;
 
-            }
-            else if(cbxProgressBar.Checked.Equals(false))
+        private void dataGridView2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
-                Settings.ShowProgressBar = false;
+                // If the mouse moves outside the rectangle, start the drag.
+                if (dragBoxFromMouseDown != Rectangle.Empty &&
+                !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                {
+                    // Proceed with the drag and drop, passing in the list item.                    
+                    DragDropEffects dropEffect = dataGridView2.DoDragDrop(
+                          dataGridView2.Rows[rowIndexFromMouseDown],
+                          DragDropEffects.Move);
+                }
+            }
+        }
+
+        private void dataGridView2_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Get the index of the item the mouse is below.
+            rowIndexFromMouseDown = dataGridView2.HitTest(e.X, e.Y).RowIndex;
+            if (rowIndexFromMouseDown != -1)
+            {
+                // Remember the point where the mouse down occurred. 
+                // The DragSize indicates the size that the mouse can move 
+                // before a drag event should be started.                
+                Size dragSize = SystemInformation.DragSize;
+                // Create a rectangle using the DragSize, with the mouse position being
+                // at the center of the rectangle.
+                dragBoxFromMouseDown = new Rectangle(
+                          new Point(
+                            e.X - (dragSize.Width / 2),
+                            e.Y - (dragSize.Height / 2)),
+                      dragSize);
+            }
+            else
+                // Reset the rectangle if the mouse is not over an item in the ListBox.
+                dragBoxFromMouseDown = Rectangle.Empty;
+
+        }
+
+        private void dataGridView2_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void dataGridView2_DragDrop(object sender, DragEventArgs e)
+        {
+
+            // The mouse locations are relative to the screen, so they must be 
+            // converted to client coordinates.
+            Point clientPoint = dataGridView2.PointToClient(new Point(e.X, e.Y));
+
+            // Get the row index of the item the mouse is below. 
+            rowIndexOfItemUnderMouseToDrop = dataGridView2.HitTest(clientPoint.X, clientPoint.Y).RowIndex;
+            if (rowIndexOfItemUnderMouseToDrop == -1)
+            {
+                return;
+            }
+            // If the drag operation was a move then remove and insert the row.
+            if (e.Effect == DragDropEffects.Move)
+            {
+                DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                dataGridView2.Rows.RemoveAt(rowIndexFromMouseDown);
+                dataGridView2.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+                dataGridView2.ClearSelection();
+                dataGridView2.Rows[rowIndexOfItemUnderMouseToDrop].Selected = true;
+            }
+        }
+
+        private void dataGridView2_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.ColumnIndex == 6)
+            {
+                int rowIndex = e.RowIndex;
+                int colIndex = e.ColumnIndex;
+
+                //System.Windows.Forms.MessageBox.Show("abc");
+                if (e.FormattedValue.ToString().Equals(String.Empty))
+                {
+                    //return;
+                }
+                //System.Windows.Forms.MessageBox.Show(dataGridView2.Rows[rowIndex].Cells[6].Value.ToString());
+                else
+                {
+                    if (dataGridView2.Rows[rowIndex].Cells[5].Value.ToString().Trim() == "Select"
+                        || dataGridView2.Rows[rowIndex].Cells[5].Value.ToString().Trim() == "Unselect")
+                    {
+                        int checkNum = 0;
+                        try
+                        {
+                            checkNum = Convert.ToInt32(e.FormattedValue.ToString());
+                        }
+                        catch
+                        { 
+                            System.Windows.Forms.MessageBox.Show("Value must be a number for Select action!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            e.Cancel = true;
+                            return;
+                        }
+                    }
+                    if (dataGridView2.Rows[rowIndex].Cells[5].Value.ToString().Trim() == "Click") {
+                        if (e.FormattedValue.ToString().Equals(String.Empty))
+                        {
+                        }
+                        else
+                        {
+                            System.Windows.Forms.MessageBox.Show("Value must be empty for Click action!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            e.Cancel = true;
+                            return;
+                        }
+                    }
+                }
             }
         }
     }

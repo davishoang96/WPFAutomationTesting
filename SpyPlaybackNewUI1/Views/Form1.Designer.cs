@@ -30,9 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InspectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.guideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnAttach = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -41,6 +51,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ConsolePanelPush = new System.Windows.Forms.RichTextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ResultPanelPush = new System.Windows.Forms.RichTextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -67,7 +84,6 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
-            this.cbxProgressBar = new System.Windows.Forms.CheckBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.TestSteps = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Index1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,25 +102,12 @@
             this.greencircleTip = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ConsolePanelPush = new System.Windows.Forms.RichTextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ResultPanelPush = new System.Windows.Forms.RichTextBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.InspectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.guideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.menuStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -117,7 +120,6 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
@@ -142,15 +144,268 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem,
+            this.helpsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1459, 24);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click_1);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.InspectorToolStripMenuItem,
+            this.viewLogsToolStripMenuItem,
+            this.settingsToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // InspectorToolStripMenuItem
+            // 
+            this.InspectorToolStripMenuItem.Name = "InspectorToolStripMenuItem";
+            this.InspectorToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.InspectorToolStripMenuItem.Text = "Inspector";
+            this.InspectorToolStripMenuItem.Click += new System.EventHandler(this.InspectorToolStripMenuItem_Click);
+            // 
+            // viewLogsToolStripMenuItem
+            // 
+            this.viewLogsToolStripMenuItem.Name = "viewLogsToolStripMenuItem";
+            this.viewLogsToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.viewLogsToolStripMenuItem.Text = "View logs";
+            this.viewLogsToolStripMenuItem.Click += new System.EventHandler(this.viewLogsToolStripMenuItem_Click_1);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // helpsToolStripMenuItem
+            // 
+            this.helpsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.guideToolStripMenuItem});
+            this.helpsToolStripMenuItem.Name = "helpsToolStripMenuItem";
+            this.helpsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpsToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // guideToolStripMenuItem
+            // 
+            this.guideToolStripMenuItem.Name = "guideToolStripMenuItem";
+            this.guideToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.guideToolStripMenuItem.Text = "User Guide";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.btnAttach);
+            this.groupBox1.Controls.Add(this.btnAdd);
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(498, 82);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Spy";
+            // 
+            // btnAttach
+            // 
+            this.btnAttach.BackColor = System.Drawing.Color.Transparent;
+            this.btnAttach.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAttach.BackgroundImage")));
+            this.btnAttach.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAttach.ForeColor = System.Drawing.Color.White;
+            this.btnAttach.Location = new System.Drawing.Point(12, 19);
+            this.btnAttach.Name = "btnAttach";
+            this.btnAttach.Size = new System.Drawing.Size(50, 50);
+            this.btnAttach.TabIndex = 9;
+            this.btnAttach.UseVisualStyleBackColor = false;
+            this.btnAttach.Click += new System.EventHandler(this.btnAttach_Click);
+            this.btnAttach.MouseEnter += new System.EventHandler(this.btnAttach_MouseEnter);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAdd.BackgroundImage")));
+            this.btnAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAdd.Location = new System.Drawing.Point(124, 19);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(50, 50);
+            this.btnAdd.TabIndex = 4;
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.MouseEnter += new System.EventHandler(this.btnAdd_MouseEnter);
+            // 
+            // button1
+            // 
+            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Location = new System.Drawing.Point(68, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(50, 50);
+            this.button1.TabIndex = 2;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.MouseEnter += new System.EventHandler(this.button1_MouseEnter);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "All",
+            "Interactive Controls",
+            "TextBox",
+            "CheckBox",
+            "TabItem",
+            "RichTextBox",
+            "Button",
+            "RadioButton",
+            "ComboBox",
+            "ComboBoxEdit",
+            "DataGrid"});
+            this.comboBox1.Location = new System.Drawing.Point(244, 50);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(250, 21);
+            this.comboBox1.TabIndex = 6;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(244, 16);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(250, 22);
+            this.textBox1.TabIndex = 5;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(197, 53);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Type";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(197, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Search";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.ConsolePanelPush);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(499, 171);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Console Panel";
+            // 
+            // ConsolePanelPush
+            // 
+            this.ConsolePanelPush.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConsolePanelPush.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConsolePanelPush.Location = new System.Drawing.Point(3, 18);
+            this.ConsolePanelPush.Name = "ConsolePanelPush";
+            this.ConsolePanelPush.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
+            this.ConsolePanelPush.Size = new System.Drawing.Size(493, 150);
+            this.ConsolePanelPush.TabIndex = 0;
+            this.ConsolePanelPush.Text = "";
+            this.ConsolePanelPush.TextChanged += new System.EventHandler(this.ConsolePanelPush_TextChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.ResultPanelPush);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(956, 171);
+            this.groupBox3.TabIndex = 24;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Result Panel";
+            // 
+            // ResultPanelPush
+            // 
+            this.ResultPanelPush.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ResultPanelPush.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ResultPanelPush.Location = new System.Drawing.Point(3, 18);
+            this.ResultPanelPush.Name = "ResultPanelPush";
+            this.ResultPanelPush.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
+            this.ResultPanelPush.Size = new System.Drawing.Size(950, 150);
+            this.ResultPanelPush.TabIndex = 0;
+            this.ResultPanelPush.Text = "";
+            this.ResultPanelPush.TextChanged += new System.EventHandler(this.ResultPanelPush_TextChanged_1);
             // 
             // splitContainer1
             // 
-            resources.ApplyResources(this.splitContainer1, "splitContainer1");
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
@@ -160,10 +415,14 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.statusStrip1);
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(1459, 700);
+            this.splitContainer1.SplitterDistance = 500;
+            this.splitContainer1.TabIndex = 30;
             // 
             // splitContainer3
             // 
-            resources.ApplyResources(this.splitContainer3, "splitContainer3");
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel1
@@ -173,12 +432,18 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
+            this.splitContainer3.Size = new System.Drawing.Size(1459, 500);
+            this.splitContainer3.SplitterDistance = 498;
+            this.splitContainer3.TabIndex = 0;
             // 
             // splitContainer5
             // 
-            resources.ApplyResources(this.splitContainer5, "splitContainer5");
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer5.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer5.IsSplitterFixed = true;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
             this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer5.Panel1
             // 
@@ -187,85 +452,20 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.groupBox5);
-            // 
-            // groupBox1
-            // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.btnAttach);
-            this.groupBox1.Controls.Add(this.btnAdd);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // btnAttach
-            // 
-            this.btnAttach.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.btnAttach, "btnAttach");
-            this.btnAttach.ForeColor = System.Drawing.Color.White;
-            this.btnAttach.Name = "btnAttach";
-            this.btnAttach.UseVisualStyleBackColor = false;
-            this.btnAttach.Click += new System.EventHandler(this.btnAttach_Click);
-            this.btnAttach.MouseEnter += new System.EventHandler(this.btnAttach_MouseEnter);
-            // 
-            // btnAdd
-            // 
-            resources.ApplyResources(this.btnAdd, "btnAdd");
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            this.btnAdd.MouseEnter += new System.EventHandler(this.btnAdd_MouseEnter);
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button1.MouseEnter += new System.EventHandler(this.button1_MouseEnter);
-            // 
-            // comboBox1
-            // 
-            resources.ApplyResources(this.comboBox1, "comboBox1");
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            resources.GetString("comboBox1.Items"),
-            resources.GetString("comboBox1.Items1"),
-            resources.GetString("comboBox1.Items2"),
-            resources.GetString("comboBox1.Items3"),
-            resources.GetString("comboBox1.Items4"),
-            resources.GetString("comboBox1.Items5"),
-            resources.GetString("comboBox1.Items6"),
-            resources.GetString("comboBox1.Items7")});
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
-            // 
-            // textBox1
-            // 
-            resources.ApplyResources(this.textBox1, "textBox1");
-            this.textBox1.Name = "textBox1";
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            this.splitContainer5.Size = new System.Drawing.Size(498, 500);
+            this.splitContainer5.SplitterDistance = 82;
+            this.splitContainer5.TabIndex = 16;
             // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.dataGridView1);
-            resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox5.Location = new System.Drawing.Point(0, 0);
             this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(498, 414);
+            this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Spy Object List";
             // 
             // dataGridView1
             // 
@@ -276,46 +476,61 @@
             this.AutomationId,
             this.Names,
             this.Type});
-            resources.ApplyResources(this.dataGridView1, "dataGridView1");
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.GridColor = System.Drawing.SystemColors.AppWorkspace;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 18);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(492, 393);
+            this.dataGridView1.TabIndex = 1;
             this.dataGridView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyDown);
             // 
             // Select
             // 
             this.Select.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            resources.ApplyResources(this.Select, "Select");
+            this.Select.HeaderText = "Select";
             this.Select.Name = "Select";
+            this.Select.ReadOnly = true;
+            this.Select.Width = 43;
             // 
             // Index
             // 
-            resources.ApplyResources(this.Index, "Index");
+            this.Index.FillWeight = 59.71831F;
+            this.Index.HeaderText = "Index";
             this.Index.Name = "Index";
             this.Index.ReadOnly = true;
+            this.Index.Width = 53;
             // 
             // AutomationId
             // 
             this.AutomationId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.AutomationId, "AutomationId");
+            this.AutomationId.FillWeight = 110.0698F;
+            this.AutomationId.HeaderText = "AutomationId";
             this.AutomationId.Name = "AutomationId";
             this.AutomationId.ReadOnly = true;
             // 
             // Names
             // 
-            resources.ApplyResources(this.Names, "Names");
+            this.Names.FillWeight = 138.0625F;
+            this.Names.HeaderText = "Names";
             this.Names.Name = "Names";
             this.Names.ReadOnly = true;
+            this.Names.Width = 122;
             // 
             // Type
             // 
             this.Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.Type, "Type");
+            this.Type.FillWeight = 92.14939F;
+            this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
             // 
             // splitContainer4
             // 
-            resources.ApplyResources(this.splitContainer4, "splitContainer4");
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer4.IsSplitterFixed = true;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
             this.splitContainer4.Name = "splitContainer4";
             // 
             // splitContainer4.Panel1
@@ -325,19 +540,29 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox4);
+            this.splitContainer4.Size = new System.Drawing.Size(957, 500);
+            this.splitContainer4.SplitterDistance = 179;
+            this.splitContainer4.TabIndex = 0;
             // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.splitContainer6);
-            resources.ApplyResources(this.groupBox6, "groupBox6");
+            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(179, 500);
+            this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Scenario";
             // 
             // splitContainer6
             // 
-            resources.ApplyResources(this.splitContainer6, "splitContainer6");
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer6.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer6.IsSplitterFixed = true;
+            this.splitContainer6.Location = new System.Drawing.Point(3, 18);
             this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer6.Panel1
             // 
@@ -346,6 +571,9 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.clbTestScriptList);
+            this.splitContainer6.Size = new System.Drawing.Size(173, 479);
+            this.splitContainer6.SplitterDistance = 42;
+            this.splitContainer6.TabIndex = 0;
             // 
             // flowLayoutPanel1
             // 
@@ -353,68 +581,117 @@
             this.flowLayoutPanel1.Controls.Add(this.btnQuickSave);
             this.flowLayoutPanel1.Controls.Add(this.btnMoveUpCLB);
             this.flowLayoutPanel1.Controls.Add(this.btnMoveDownCLB);
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(173, 42);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // btnPlaybackScenario
             // 
-            resources.ApplyResources(this.btnPlaybackScenario, "btnPlaybackScenario");
+            this.btnPlaybackScenario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPlaybackScenario.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPlaybackScenario.BackgroundImage")));
+            this.btnPlaybackScenario.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnPlaybackScenario.Location = new System.Drawing.Point(1, 1);
+            this.btnPlaybackScenario.Margin = new System.Windows.Forms.Padding(1);
             this.btnPlaybackScenario.Name = "btnPlaybackScenario";
+            this.btnPlaybackScenario.Size = new System.Drawing.Size(40, 40);
+            this.btnPlaybackScenario.TabIndex = 29;
             this.btnPlaybackScenario.UseVisualStyleBackColor = true;
             this.btnPlaybackScenario.Click += new System.EventHandler(this.btnPlaybackScenario_Click);
             // 
             // btnQuickSave
             // 
-            resources.ApplyResources(this.btnQuickSave, "btnQuickSave");
+            this.btnQuickSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuickSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnQuickSave.BackgroundImage")));
+            this.btnQuickSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnQuickSave.Location = new System.Drawing.Point(43, 1);
+            this.btnQuickSave.Margin = new System.Windows.Forms.Padding(1);
             this.btnQuickSave.Name = "btnQuickSave";
+            this.btnQuickSave.Size = new System.Drawing.Size(40, 40);
+            this.btnQuickSave.TabIndex = 2;
             this.btnQuickSave.UseVisualStyleBackColor = true;
             this.btnQuickSave.Click += new System.EventHandler(this.btnQuickSave_Click);
             // 
             // btnMoveUpCLB
             // 
-            resources.ApplyResources(this.btnMoveUpCLB, "btnMoveUpCLB");
+            this.btnMoveUpCLB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMoveUpCLB.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMoveUpCLB.BackgroundImage")));
+            this.btnMoveUpCLB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMoveUpCLB.Location = new System.Drawing.Point(85, 1);
+            this.btnMoveUpCLB.Margin = new System.Windows.Forms.Padding(1);
             this.btnMoveUpCLB.Name = "btnMoveUpCLB";
+            this.btnMoveUpCLB.Size = new System.Drawing.Size(40, 40);
+            this.btnMoveUpCLB.TabIndex = 27;
             this.btnMoveUpCLB.UseVisualStyleBackColor = true;
             this.btnMoveUpCLB.Click += new System.EventHandler(this.btnMoveUpCLB_Click);
             // 
             // btnMoveDownCLB
             // 
-            resources.ApplyResources(this.btnMoveDownCLB, "btnMoveDownCLB");
+            this.btnMoveDownCLB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMoveDownCLB.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMoveDownCLB.BackgroundImage")));
+            this.btnMoveDownCLB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMoveDownCLB.Location = new System.Drawing.Point(127, 1);
+            this.btnMoveDownCLB.Margin = new System.Windows.Forms.Padding(1);
             this.btnMoveDownCLB.Name = "btnMoveDownCLB";
+            this.btnMoveDownCLB.Size = new System.Drawing.Size(40, 40);
+            this.btnMoveDownCLB.TabIndex = 28;
             this.btnMoveDownCLB.UseVisualStyleBackColor = true;
             this.btnMoveDownCLB.Click += new System.EventHandler(this.btnMoveDownCLB_Click);
             // 
             // clbTestScriptList
             // 
             this.clbTestScriptList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.clbTestScriptList, "clbTestScriptList");
+            this.clbTestScriptList.CheckOnClick = true;
+            this.clbTestScriptList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbTestScriptList.FormattingEnabled = true;
+            this.clbTestScriptList.HorizontalScrollbar = true;
+            this.clbTestScriptList.Location = new System.Drawing.Point(0, 0);
+            this.clbTestScriptList.Margin = new System.Windows.Forms.Padding(0);
             this.clbTestScriptList.Name = "clbTestScriptList";
+            this.clbTestScriptList.Size = new System.Drawing.Size(173, 433);
+            this.clbTestScriptList.TabIndex = 27;
+            this.clbTestScriptList.ThreeDCheckBoxes = true;
             this.clbTestScriptList.SelectedIndexChanged += new System.EventHandler(this.clbTestScriptList_SelectedIndexChanged_1);
             this.clbTestScriptList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.clbTestScriptList_KeyDown);
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.tctrlPlayback);
-            resources.ApplyResources(this.groupBox4, "groupBox4");
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(774, 500);
+            this.groupBox4.TabIndex = 17;
             this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Playback";
             // 
             // tctrlPlayback
             // 
             this.tctrlPlayback.Controls.Add(this.tpgPlaybackTable);
             this.tctrlPlayback.Controls.Add(this.tpgPlaybackScript);
-            resources.ApplyResources(this.tctrlPlayback, "tctrlPlayback");
+            this.tctrlPlayback.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tctrlPlayback.Location = new System.Drawing.Point(3, 18);
             this.tctrlPlayback.Name = "tctrlPlayback";
             this.tctrlPlayback.SelectedIndex = 0;
+            this.tctrlPlayback.Size = new System.Drawing.Size(768, 479);
+            this.tctrlPlayback.TabIndex = 16;
             this.tctrlPlayback.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tpgPlaybackTable
             // 
             this.tpgPlaybackTable.Controls.Add(this.flowLayoutPanel2);
             this.tpgPlaybackTable.Controls.Add(this.dataGridView2);
-            resources.ApplyResources(this.tpgPlaybackTable, "tpgPlaybackTable");
+            this.tpgPlaybackTable.Location = new System.Drawing.Point(4, 22);
             this.tpgPlaybackTable.Name = "tpgPlaybackTable";
+            this.tpgPlaybackTable.Padding = new System.Windows.Forms.Padding(3);
+            this.tpgPlaybackTable.Size = new System.Drawing.Size(760, 453);
+            this.tpgPlaybackTable.TabIndex = 0;
+            this.tpgPlaybackTable.Text = "Playback Table";
             this.tpgPlaybackTable.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel2
@@ -425,68 +702,91 @@
             this.flowLayoutPanel2.Controls.Add(this.btnRemove);
             this.flowLayoutPanel2.Controls.Add(this.btnMoveUp);
             this.flowLayoutPanel2.Controls.Add(this.btnMoveDown);
-            this.flowLayoutPanel2.Controls.Add(this.cbxProgressBar);
-            resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 6);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(705, 55);
+            this.flowLayoutPanel2.TabIndex = 8;
             // 
             // btnPlaybackTestSteps
             // 
-            resources.ApplyResources(this.btnPlaybackTestSteps, "btnPlaybackTestSteps");
+            this.btnPlaybackTestSteps.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPlaybackTestSteps.BackgroundImage")));
+            this.btnPlaybackTestSteps.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnPlaybackTestSteps.Location = new System.Drawing.Point(3, 3);
             this.btnPlaybackTestSteps.Name = "btnPlaybackTestSteps";
+            this.btnPlaybackTestSteps.Size = new System.Drawing.Size(50, 50);
+            this.btnPlaybackTestSteps.TabIndex = 3;
             this.btnPlaybackTestSteps.UseVisualStyleBackColor = true;
             this.btnPlaybackTestSteps.Click += new System.EventHandler(this.btnPlaybackTestSteps_Click);
             this.btnPlaybackTestSteps.MouseEnter += new System.EventHandler(this.btnPlaybackTestSteps_MouseEnter);
             // 
             // btnCreateTestScript
             // 
-            resources.ApplyResources(this.btnCreateTestScript, "btnCreateTestScript");
+            this.btnCreateTestScript.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCreateTestScript.BackgroundImage")));
+            this.btnCreateTestScript.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCreateTestScript.Location = new System.Drawing.Point(59, 3);
             this.btnCreateTestScript.Name = "btnCreateTestScript";
+            this.btnCreateTestScript.Size = new System.Drawing.Size(50, 50);
+            this.btnCreateTestScript.TabIndex = 4;
             this.btnCreateTestScript.UseVisualStyleBackColor = true;
             this.btnCreateTestScript.Click += new System.EventHandler(this.btnCreateTestScript_Click);
             this.btnCreateTestScript.MouseEnter += new System.EventHandler(this.btnCreateTestScript_MouseEnter);
             // 
             // btnSendKeyorWaitEnable
             // 
-            resources.ApplyResources(this.btnSendKeyorWaitEnable, "btnSendKeyorWaitEnable");
+            this.btnSendKeyorWaitEnable.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSendKeyorWaitEnable.BackgroundImage")));
+            this.btnSendKeyorWaitEnable.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSendKeyorWaitEnable.Location = new System.Drawing.Point(115, 3);
             this.btnSendKeyorWaitEnable.Name = "btnSendKeyorWaitEnable";
+            this.btnSendKeyorWaitEnable.Size = new System.Drawing.Size(50, 50);
+            this.btnSendKeyorWaitEnable.TabIndex = 7;
             this.btnSendKeyorWaitEnable.UseVisualStyleBackColor = true;
             this.btnSendKeyorWaitEnable.Click += new System.EventHandler(this.btnSendKeyorWaitEnable_Click);
             this.btnSendKeyorWaitEnable.MouseEnter += new System.EventHandler(this.btnSendKeyorWaitEnable_MouseEnter);
             // 
             // btnRemove
             // 
-            resources.ApplyResources(this.btnRemove, "btnRemove");
+            this.btnRemove.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRemove.BackgroundImage")));
+            this.btnRemove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRemove.Location = new System.Drawing.Point(171, 3);
             this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(50, 50);
+            this.btnRemove.TabIndex = 5;
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             this.btnRemove.MouseEnter += new System.EventHandler(this.btnRemove_MouseEnter);
             // 
             // btnMoveUp
             // 
-            resources.ApplyResources(this.btnMoveUp, "btnMoveUp");
+            this.btnMoveUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMoveUp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMoveUp.BackgroundImage")));
+            this.btnMoveUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMoveUp.Location = new System.Drawing.Point(227, 3);
             this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Size = new System.Drawing.Size(50, 50);
+            this.btnMoveUp.TabIndex = 5;
             this.btnMoveUp.UseVisualStyleBackColor = true;
             this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
             this.btnMoveUp.MouseEnter += new System.EventHandler(this.btnMoveUp_MouseEnter);
             // 
             // btnMoveDown
             // 
-            resources.ApplyResources(this.btnMoveDown, "btnMoveDown");
+            this.btnMoveDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMoveDown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMoveDown.BackgroundImage")));
+            this.btnMoveDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMoveDown.Location = new System.Drawing.Point(283, 3);
             this.btnMoveDown.Name = "btnMoveDown";
+            this.btnMoveDown.Size = new System.Drawing.Size(50, 50);
+            this.btnMoveDown.TabIndex = 6;
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             this.btnMoveDown.MouseEnter += new System.EventHandler(this.btnMoveDown_MouseEnter);
             // 
-            // cbxProgressBar
-            // 
-            resources.ApplyResources(this.cbxProgressBar, "cbxProgressBar");
-            this.cbxProgressBar.Name = "cbxProgressBar";
-            this.cbxProgressBar.UseVisualStyleBackColor = true;
-            this.cbxProgressBar.CheckedChanged += new System.EventHandler(this.cbxProgressBar_CheckedChanged);
-            // 
             // dataGridView2
             // 
-            resources.ApplyResources(this.dataGridView2, "dataGridView2");
+            this.dataGridView2.AllowDrop = true;
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TestSteps,
@@ -496,85 +796,114 @@
             this.Type1,
             this.Actions,
             this.InputValue});
+            this.dataGridView2.Location = new System.Drawing.Point(6, 64);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellClick_1);
+            this.dataGridView2.Size = new System.Drawing.Size(748, 382);
+            this.dataGridView2.TabIndex = 1;
+            this.dataGridView2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellClick);
+            this.dataGridView2.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView2_CellValidating);
+            this.dataGridView2.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView2_DragDrop);
+            this.dataGridView2.DragOver += new System.Windows.Forms.DragEventHandler(this.dataGridView2_DragOver);
             this.dataGridView2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView2_KeyDown);
+            this.dataGridView2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridView2_MouseDown);
+            this.dataGridView2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dataGridView2_MouseMove);
             // 
             // TestSteps
             // 
-            resources.ApplyResources(this.TestSteps, "TestSteps");
+            this.TestSteps.HeaderText = "Test Steps";
             this.TestSteps.Name = "TestSteps";
             // 
             // Index1
             // 
-            resources.ApplyResources(this.Index1, "Index1");
+            this.Index1.HeaderText = "Index";
             this.Index1.Name = "Index1";
             this.Index1.ReadOnly = true;
             // 
             // AutomationId1
             // 
-            resources.ApplyResources(this.AutomationId1, "AutomationId1");
+            this.AutomationId1.HeaderText = "AutomationId";
             this.AutomationId1.Name = "AutomationId1";
             this.AutomationId1.ReadOnly = true;
             // 
             // Name1
             // 
-            resources.ApplyResources(this.Name1, "Name1");
+            this.Name1.HeaderText = "Name";
             this.Name1.Name = "Name1";
             this.Name1.ReadOnly = true;
             // 
             // Type1
             // 
-            resources.ApplyResources(this.Type1, "Type1");
+            this.Type1.HeaderText = "Type";
             this.Type1.Name = "Type1";
             this.Type1.ReadOnly = true;
             // 
             // Actions
             // 
-            resources.ApplyResources(this.Actions, "Actions");
+            this.Actions.HeaderText = "Actions";
             this.Actions.Name = "Actions";
             // 
             // InputValue
             // 
             this.InputValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.InputValue, "InputValue");
+            this.InputValue.HeaderText = "Input Value";
             this.InputValue.Name = "InputValue";
             // 
             // tpgPlaybackScript
             // 
             this.tpgPlaybackScript.Controls.Add(this.flowLayoutPanel3);
             this.tpgPlaybackScript.Controls.Add(this.rtxtScript);
-            resources.ApplyResources(this.tpgPlaybackScript, "tpgPlaybackScript");
+            this.tpgPlaybackScript.Location = new System.Drawing.Point(4, 22);
             this.tpgPlaybackScript.Name = "tpgPlaybackScript";
+            this.tpgPlaybackScript.Padding = new System.Windows.Forms.Padding(3);
+            this.tpgPlaybackScript.Size = new System.Drawing.Size(659, 455);
+            this.tpgPlaybackScript.TabIndex = 1;
+            this.tpgPlaybackScript.Text = "Playback Script";
             this.tpgPlaybackScript.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Controls.Add(this.btnPlaybackTestScript);
             this.flowLayoutPanel3.Controls.Add(this.btnCreateTestSteps);
-            resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 6);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(701, 55);
+            this.flowLayoutPanel3.TabIndex = 12;
             // 
             // btnPlaybackTestScript
             // 
-            resources.ApplyResources(this.btnPlaybackTestScript, "btnPlaybackTestScript");
+            this.btnPlaybackTestScript.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPlaybackTestScript.BackgroundImage")));
+            this.btnPlaybackTestScript.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnPlaybackTestScript.Location = new System.Drawing.Point(3, 3);
             this.btnPlaybackTestScript.Name = "btnPlaybackTestScript";
+            this.btnPlaybackTestScript.Size = new System.Drawing.Size(50, 50);
+            this.btnPlaybackTestScript.TabIndex = 11;
             this.btnPlaybackTestScript.UseVisualStyleBackColor = true;
             this.btnPlaybackTestScript.Click += new System.EventHandler(this.btnPlaybackTestScript_Click);
             // 
             // btnCreateTestSteps
             // 
-            resources.ApplyResources(this.btnCreateTestSteps, "btnCreateTestSteps");
+            this.btnCreateTestSteps.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCreateTestSteps.BackgroundImage")));
+            this.btnCreateTestSteps.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCreateTestSteps.Location = new System.Drawing.Point(59, 3);
             this.btnCreateTestSteps.Name = "btnCreateTestSteps";
+            this.btnCreateTestSteps.Size = new System.Drawing.Size(50, 50);
+            this.btnCreateTestSteps.TabIndex = 3;
             this.btnCreateTestSteps.UseVisualStyleBackColor = true;
             this.btnCreateTestSteps.Click += new System.EventHandler(this.btnCreateTestSteps_Click);
             // 
             // rtxtScript
             // 
-            resources.ApplyResources(this.rtxtScript, "rtxtScript");
+            this.rtxtScript.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtxtScript.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtxtScript.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtxtScript.Location = new System.Drawing.Point(6, 64);
             this.rtxtScript.Name = "rtxtScript";
+            this.rtxtScript.Size = new System.Drawing.Size(651, 385);
+            this.rtxtScript.TabIndex = 0;
+            this.rtxtScript.Text = "";
             // 
             // statusStrip1
             // 
@@ -582,27 +911,38 @@
             this.redcircleTip,
             this.greencircleTip,
             this.toolStripStatusLabel1});
-            resources.ApplyResources(this.statusStrip1, "statusStrip1");
+            this.statusStrip1.Location = new System.Drawing.Point(0, 174);
             this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1459, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
             // 
             // redcircleTip
             // 
-            resources.ApplyResources(this.redcircleTip, "redcircleTip");
+            this.redcircleTip.Image = ((System.Drawing.Image)(resources.GetObject("redcircleTip.Image")));
             this.redcircleTip.Name = "redcircleTip";
+            this.redcircleTip.Size = new System.Drawing.Size(67, 17);
+            this.redcircleTip.Text = "NO AUT";
             // 
             // greencircleTip
             // 
-            resources.ApplyResources(this.greencircleTip, "greencircleTip");
+            this.greencircleTip.Image = ((System.Drawing.Image)(resources.GetObject("greencircleTip.Image")));
             this.greencircleTip.Name = "greencircleTip";
+            this.greencircleTip.Size = new System.Drawing.Size(49, 17);
+            this.greencircleTip.Text = "AUT:";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            resources.ApplyResources(this.toolStripStatusLabel1, "toolStripStatusLabel1");
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // splitContainer2
             // 
-            resources.ApplyResources(this.splitContainer2, "splitContainer2");
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -612,111 +952,9 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.ConsolePanelPush);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // ConsolePanelPush
-            // 
-            resources.ApplyResources(this.ConsolePanelPush, "ConsolePanelPush");
-            this.ConsolePanelPush.Name = "ConsolePanelPush";
-            this.ConsolePanelPush.TextChanged += new System.EventHandler(this.ConsolePanelPush_TextChanged);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.ResultPanelPush);
-            resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.TabStop = false;
-            // 
-            // ResultPanelPush
-            // 
-            resources.ApplyResources(this.ResultPanelPush, "ResultPanelPush");
-            this.ResultPanelPush.Name = "ResultPanelPush";
-            this.ResultPanelPush.TextChanged += new System.EventHandler(this.ResultPanelPush_TextChanged_1);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.helpsToolStripMenuItem,
-            this.optionToolStripMenuItem});
-            resources.ApplyResources(this.menuStrip1, "menuStrip1");
-            this.menuStrip1.Name = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importToolStripMenuItem,
-            this.exportToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
-            // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            resources.ApplyResources(this.importToolStripMenuItem, "importToolStripMenuItem");
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click_1);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            resources.ApplyResources(this.exportToolStripMenuItem, "exportToolStripMenuItem");
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.InspectorToolStripMenuItem,
-            this.viewLogsToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            resources.ApplyResources(this.toolsToolStripMenuItem, "toolsToolStripMenuItem");
-            // 
-            // InspectorToolStripMenuItem
-            // 
-            this.InspectorToolStripMenuItem.Name = "InspectorToolStripMenuItem";
-            resources.ApplyResources(this.InspectorToolStripMenuItem, "InspectorToolStripMenuItem");
-            this.InspectorToolStripMenuItem.Click += new System.EventHandler(this.InspectorToolStripMenuItem_Click);
-            // 
-            // viewLogsToolStripMenuItem
-            // 
-            this.viewLogsToolStripMenuItem.Name = "viewLogsToolStripMenuItem";
-            resources.ApplyResources(this.viewLogsToolStripMenuItem, "viewLogsToolStripMenuItem");
-            this.viewLogsToolStripMenuItem.Click += new System.EventHandler(this.viewLogsToolStripMenuItem_Click_1);
-            // 
-            // helpsToolStripMenuItem
-            // 
-            this.helpsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.guideToolStripMenuItem});
-            this.helpsToolStripMenuItem.Name = "helpsToolStripMenuItem";
-            resources.ApplyResources(this.helpsToolStripMenuItem, "helpsToolStripMenuItem");
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // guideToolStripMenuItem
-            // 
-            this.guideToolStripMenuItem.Name = "guideToolStripMenuItem";
-            resources.ApplyResources(this.guideToolStripMenuItem, "guideToolStripMenuItem");
-            // 
-            // optionToolStripMenuItem
-            // 
-            this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            resources.ApplyResources(this.optionToolStripMenuItem, "optionToolStripMenuItem");
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.splitContainer2.Size = new System.Drawing.Size(1459, 171);
+            this.splitContainer2.SplitterDistance = 499;
+            this.splitContainer2.TabIndex = 0;
             // 
             // timer1
             // 
@@ -724,20 +962,27 @@
             // 
             // Form1
             // 
-            resources.ApplyResources(this, "$this");
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1459, 724);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Spy & Playback";
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -752,8 +997,6 @@
             this.splitContainer5.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.splitContainer4.Panel1.ResumeLayout(false);
@@ -770,7 +1013,6 @@
             this.tctrlPlayback.ResumeLayout(false);
             this.tpgPlaybackTable.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.tpgPlaybackScript.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
@@ -781,10 +1023,6 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -864,8 +1102,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Type1;
         private System.Windows.Forms.DataGridViewComboBoxColumn Actions;
         private System.Windows.Forms.DataGridViewTextBoxColumn InputValue;
-        private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
-        private System.Windows.Forms.CheckBox cbxProgressBar;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

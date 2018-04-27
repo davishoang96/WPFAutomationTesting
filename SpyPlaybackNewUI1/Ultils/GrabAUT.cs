@@ -8,18 +8,36 @@ using System.Windows.Automation;
 
 namespace SpyandPlaybackTestTool.Ultils
 {
-    internal class DoSpy
+    internal class GrabAUT
     {
         public static Gu.Wpf.UiAutomation.Application App { get; set; }
+
         public static Gu.Wpf.UiAutomation.Window MainWindow { get; set; }
+
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static string theMessage { get; set; }
 
         #region UiElement Functions
 
+        /// <summary>
+        /// Search UI by class
+        /// </summary>
+        /// <param name="type">Button, MessageBox, DataGrid, ComboBox...etc</param>
+        /// <returns></returns>
         public static IReadOnlyList<UiElement> ElementClass(string type)
         {
             return MainWindow.FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.ClassNameProperty, type));
+        }
+
+        /// <summary>
+        /// Search all UI by framework
+        /// </summary>
+        /// <param name="type">WPF or Win32</param>
+        /// <returns></returns>
+        public static IReadOnlyList<UiElement> SearchbyFramework(string type)
+        {
+            return MainWindow.FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.FrameworkIdProperty, type));
         }
 
         public static void GetMainWindow()
@@ -29,21 +47,21 @@ namespace SpyandPlaybackTestTool.Ultils
                 Process AttachProcess = WindowInteraction.GetProcess(ProcessForm.targetproc);
                 
                 App = Application.Attach(AttachProcess.Id);
+
+                App.GetMainWindow(TimeSpan.FromSeconds(5));
+
                 MainWindow = App.MainWindow;
 
             }
             catch
             {
-                throw new Exception("Cannot found MainWindow");
-                //System.Windows.Forms.MessageBox.Show("CANNOT ATTACH THIS PROCESS");
+                //T1.Join();
+                throw new Exception("Cannot get MainWindow");
             }
            
         }
 
-        public static IReadOnlyList<UiElement> SearchbyFramework(string type)
-        {
-            return MainWindow.FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.FrameworkIdProperty, type));
-        }
+        
 
         #endregion UiElement Functions
     }

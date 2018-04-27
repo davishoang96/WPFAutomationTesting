@@ -22,6 +22,7 @@ namespace SpyandPlaybackTestTool.Ultils
 
         private static SpyObject[] SpyObjectList;
 
+        private static Users theUser = new Users();
         private static Process thisProc = Process.GetCurrentProcess();
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

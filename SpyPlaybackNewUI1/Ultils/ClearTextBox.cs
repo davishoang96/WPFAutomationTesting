@@ -16,7 +16,8 @@ namespace SpyandPlaybackTestTool.Ultils
     internal class ClearTextBox
     {
         private static Gu.Wpf.UiAutomation.Application App;
-        private static IReadOnlyList<UiElement> ElementList;
+        private static IReadOnlyList<UiElement> ElementListWPF;
+        private static IReadOnlyList<UiElement> ElementListWin32;
         private static Gu.Wpf.UiAutomation.Window MainWindow;
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -34,39 +35,44 @@ namespace SpyandPlaybackTestTool.Ultils
             {
                 log.Info("BEGIN CLEAR VALUE");
                 Process targetProcess = WindowInteraction.GetProcess(Proc);
-
-                
                 App = Application.Attach(targetProcess.Id);
                 MainWindow = App.MainWindow;
                 WindowInteraction.FocusWindow(targetProcess);
-                ElementList = MainWindow.FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.FrameworkIdProperty, "WPF"));
+
+                ElementListWPF = GrabAUT.SearchbyFramework("WPF");
+
+                //ElementListWin32 = DoSpy.SearchbyFramework("Win32");
+
+                //if (ElementListWin32[0].AsMessageBox().)
+                //{
+                //    ElementListWin32[0].AsMessageBox().Close();
+                //}
 
                 int id = 0;
-                foreach (UiElement UIE in ElementList)
+
+                foreach (UiElement UIE in ElementListWPF)
                 {
                     if (UIE.ControlType.ProgrammaticName == "ControlType.Edit")
                     {
                         if (!UIE.AsTextBox().IsReadOnly)
                         {
-                            //UIE.AsTextBox().Enter("");
-                            (UIE.AutomationElement.GetCurrentPattern(ValuePattern.Pattern) as ValuePattern).SetValue("");
+                            UIE.AsTextBox().Enter("");
+                            //(UIE.AutomationElement.GetCurrentPattern(ValuePattern.Pattern) as ValuePattern).SetValue("");
                             log.Info(id + " CLEARED");
                         }
                     }
-                    //else if (UIE.ClassName == "CheckBox")
-                    //{
-                    //    if (UIE.AsCheckBox().IsChecked == true)
-                    //    {
-                    //        UIE.AsCheckBox().Click();
-                    //        log.Info(id + " UNCHECKED");
-                    //    }
-                    //}
+                    else if (UIE.ClassName == "CheckBox")
+                    {
+                        if (UIE.AsCheckBox().IsChecked == true)
+                        {
+                            UIE.AsCheckBox().Click();
+                            log.Info(id + " UNCHECKED");
+                        }
+                    }
+
                     id++;
                 }
-
                 theMessage = curtime + " - CLEAR SCREEN COMPLETED";
-
-
             }
             catch (Exception ex)
             {
@@ -74,6 +80,9 @@ namespace SpyandPlaybackTestTool.Ultils
                 {
                     log.Error("CANNOT USE THE CURRENT SCRIPT ON THIS SCREEN");
                     theMessage = curtime + " - CANNOT USE THE CURRENT SCRIPT ON THIS SCREEN";
+                } else
+                {
+                    log.Error(ex.Message);
                 }
             }
         }
